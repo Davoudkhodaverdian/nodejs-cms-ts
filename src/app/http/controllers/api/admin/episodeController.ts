@@ -1,4 +1,4 @@
-import mongoose ,{ Error } from "mongoose";
+import mongoose, { Error } from "mongoose";
 
 import Controller from "../../controller";
 import { Request, Response } from 'express';
@@ -20,8 +20,8 @@ class EpisodeController extends Controller {
 
     Course.findById(req.body.course_id, (err: Error, course: ICourse) => {
       if (err) res.status(400).send({ err });
-      else if (course) { 
-    
+      else if (course) {
+
         let newEpisode = new Episode({
           course: course._id, // or req.body.course_id
           title: req.body.title,
@@ -29,7 +29,7 @@ class EpisodeController extends Controller {
           videoUrl: req.body.videoUrl,
           number: req.body.number,
         });
-        newEpisode.save((err: Error) => {
+        newEpisode.save((err) => {
           if (err) res.status(400).send({ err });
           else {
             course.episodes.push(newEpisode._id);
@@ -38,13 +38,23 @@ class EpisodeController extends Controller {
           }
         });
 
-        
+
       }
     })
 
-
   }
 
+  episode(req: Request, res: Response) {
+    // populate method gives us whole course data not just id
+    Episode.findById(req.params.id).populate('course').exec((err, episode) => {
+
+      if (err) res.status(400).send({ err });
+      else if (episode) {
+        res.status(200).json(episode);
+      }
+    })
+
+  }
 }
 
 export default new EpisodeController();

@@ -5,6 +5,7 @@ import episodeController from '../../../../http/controllers/api/admin/episodeCon
 const router = express.Router();
 
 router.get('/',episodeController.index);
+router.get('/:id',episodeController.episode);
 router.post('/',episodeController.createEpisode);
 
 
