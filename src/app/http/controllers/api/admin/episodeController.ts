@@ -9,8 +9,8 @@ import Course, { ICourse } from "../../../../models/course";
 class EpisodeController extends Controller {
 
   index(req: Request, res: Response) {
-    Episode.find({}, (err: Error, episodes: IEpisode[]) => {
-      if (err) res.status(400).send({ err });
+    Episode.find({}, (error: Error, episodes: IEpisode[]) => {
+      if (error) res.status(422).send({ error });
       else if (episodes) res.status(200).json({ episodes });
     })
 
@@ -18,10 +18,10 @@ class EpisodeController extends Controller {
 
   createEpisode(req: Request, res: Response) {
 
-    Course.findById(req.body.course_id, (err: Error, course: ICourse) => {
-      if (err) res.status(400).send({ err });
+    Course.findById(req.body.course_id, (error: Error, course: ICourse) => {
+      if (error) res.status(422).send({ error });
       else if (course) {
-
+        
         let newEpisode = new Episode({
           course: course._id, // or req.body.course_id
           title: req.body.title,
@@ -29,8 +29,8 @@ class EpisodeController extends Controller {
           videoUrl: req.body.videoUrl,
           number: req.body.number,
         });
-        newEpisode.save((err) => {
-          if (err) res.status(400).send({ err });
+        newEpisode.save((error) => {
+          if (error) res.status(422).send({ error });
           else {
             course.episodes.push(newEpisode._id);
             course.save();
@@ -46,9 +46,9 @@ class EpisodeController extends Controller {
 
   episode(req: Request, res: Response) {
     // populate method gives us whole course data not just id
-    Episode.findById(req.params.id).populate('course').exec((err, episode) => {
+    Episode.findById(req.params.id).populate('course').exec((error, episode) => {
 
-      if (err) res.status(400).send({ err });
+      if (error) res.status(422).send({ error });
       else if (episode) {
         res.status(200).json(episode);
       }

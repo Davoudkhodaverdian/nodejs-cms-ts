@@ -7,8 +7,8 @@ import Course, { ICourse } from "../../../../models/course";
 class CourseController extends Controller {
 
   index(req: Request, res: Response) {
-    Course.find({}, (err: Error, courses: ICourse[]) => {
-      if (err) res.status(400).send({ err });
+    Course.find({}, (error: Error, courses: ICourse[]) => {
+      if (error) res.status(422).send({ error });
       else if (courses) res.status(200).json({ courses });
     })
 
@@ -21,8 +21,8 @@ class CourseController extends Controller {
       body: req.body.body,
       price: req.body.price
     });
-    newCourse.save((err: Error) => {
-      if (err) res.status(400).send({ err });
+    newCourse.save((error: Error) => {
+      if (error) res.status(422).send({ error });
       else res.status(200).json('course created');
     });
 

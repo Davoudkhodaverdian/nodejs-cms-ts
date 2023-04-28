@@ -2,43 +2,53 @@ import Controller from "../../controller";
 import { NextFunction, Request, Response } from 'express';
 
 import { body } from 'express-validator';
-import mongoose from "mongoose";
+import bcrypt from 'bcrypt';
+import User, { IUser } from "../../../../models/user";
+import Transform from "../../../../transform";
 
 class LoginController extends Controller {
 
   validators = [
+    // if we dont have withMessage property,the message is defualt
     // username must be an email
-    body('email').isEmail(),
+    body('email').notEmpty().withMessage('email is required'),
+    body('email').isEmail().withMessage('email is not valid'),
     // password must be at least 5 chars long
-    body('password').isLength({ min: 5 }).withMessage('must be at least 5 chars long')
-
+    body('password').notEmpty().withMessage('password is required')
+      .isLength({ min: 5 }).withMessage('must be at least 5 chars long')
   ]
-
-  index(req: Request, res: Response) {
-
-    res.json({
-      email: req.body.email,
-      password: req.body.password
-    });
-  }
 
   validate(req: Request, res: Response, next: NextFunction) {
     this.validateExpressValidator(req, res, next);
   }
 
-  createUserSample(req: Request, res: Response) {
+  index(req: Request, res: Response) {
 
-    const UserSchema = new mongoose.Schema({
-      name: { type: String, required: true }, // String is shorthand for {type: String}
+
+    const createToken = this.createToken;
+    User.findOne({ email: req.body.email }, function (error: Error, user: IUser) {
+
+      if (!user) {
+        return res.status(422).json({ error: { message: "چنین ایمیلی وجود ندارد" } });
+      } else {
+
+        bcrypt.compare(req.body.password, user.password, function (_error, result) {
+          // result == false
+          if (!result) {
+            return res.status(422).json({ error: { message: "پسورد وارد شده صحیح نمی باشد" } });
+          }
+          //create token
+          return res.status(200).json({
+            user: new Transform().transform<IUser>(user, ['firstName', 'lastName', 'email']),
+            token: createToken(user._id)
+          });
+        });
+
+      }
 
     });
-
-    const User = mongoose.model('User', UserSchema);
-    new User({ firstName: "ygyg",lastName:"uhhguhuh", email: "dfgg@gmail.com",password: "123456"}).save(err => {
-      if (err) throw err;
-    });
-    res.json({ firstName: "Davoud" });
   }
+
 }
 
 export default new LoginController();

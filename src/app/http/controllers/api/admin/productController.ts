@@ -6,16 +6,16 @@ import { Request, Response } from 'express';
 class ProductController extends Controller {
 
   index(req: Request, res: Response) {
-    Product.find({}, (err: Error, products: IProduct[]) => {
-      if (err) res.status(400).send({ err });
+    Product.find({}, (error: Error, products: IProduct[]) => {
+      if (error) res.status(422).send({ error });
       else if (products) res.status(200).json({ products });
     })
 
   }
   product(req: Request, res: Response) {
    
-    Product.findById(req.params.id, (err: Error, product: IProduct) => {
-      if (err) res.status(400).send({ err });
+    Product.findById(req.params.id, (error: Error, product: IProduct) => {
+      if (error) res.status(422).send({ error });
       else if (product) res.status(200).json({ product });
     })
   }
@@ -26,23 +26,23 @@ class ProductController extends Controller {
       body: req.body.body,
       price: req.body.price
     });
-    newProduct.save((err: Error) => {
-      if (err) res.status(400).send({ err });
+    newProduct.save((error: Error) => {
+      if (error) res.status(422).send({ error });
       else res.status(200).json('product created');
     });
 
   }
   changeProduct(req: Request, res: Response) {
-    Product.findByIdAndUpdate(req.params.id,{title: req.body.title},(err: Error) => {
-      if (err) res.status(400).send({ err });
+    Product.findByIdAndUpdate(req.params.id,{title: req.body.title},(error: Error) => {
+      if (error) res.status(422).send({ error });
       else res.status(200).json('title changed');
     })
    
 
   }
   removeProduct(req: Request, res: Response) {
-    Product.findByIdAndDelete(req.params.id,(err: Error) => {
-      if (err) res.status(400).send({ err });
+    Product.findByIdAndDelete(req.params.id,(error: Error) => {
+      if (error) res.status(422).send({ error });
       else res.status(200).json('The product has removed');
     })
    
