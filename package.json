@@ -4,8 +4,8 @@
   "description": "",
   "main": "build/index.js",
   "scripts": {
-    "start": "nodemon build/index.js",
-    "build": "tsc && node build/index.js",
+    "start": "set NODE_ENV=development && nodemon build/index.js",
+    "build": "set NODE_ENV=production && tsc && node build/index.js",
     "lint": "eslint . --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

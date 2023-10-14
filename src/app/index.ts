@@ -8,8 +8,8 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' }); // for process.env
 dotenv.config({ path: '.env' }); // for process.env
 
-// const db =  "mongodb://localhost/nodejscms" // development environment
-const db = process.env.NODE_ENV === 'development' ? "mongodb://localhost/nodejscms" : process.env.MONGODB_Address;
+const db =  "mongodb://localhost/nodejscms" // development environment
+// const db = process.env.NODE_ENV === 'development' ? "mongodb://localhost/nodejscms" : process.env.MONGODB_Address;
 
 const app = express();
 

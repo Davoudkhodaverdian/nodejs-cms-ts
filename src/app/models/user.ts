@@ -31,6 +31,7 @@ export interface IUser extends Document {
     createdAt: NativeDate;
     updatedAt: NativeDate;
     firstName: string;
+    phoneNumber: string;
     lastName: string;
     email: string;
     password: string;

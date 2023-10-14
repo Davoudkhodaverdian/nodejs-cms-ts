@@ -8,11 +8,13 @@ class UserController extends Controller {
 
   user(req: Request, res: Response) {
 
-      return res.status(200).json({
+    return res.status(200).json({
 
-        // using transform class for get limited data for people that they are not admin
-        user: new Transform().transform<IUser>(req['user'], ['firstName', 'lastName', 'email'])
-      });
+      // using transform class for get limited data for people that they are not admin
+      user: new Transform().transform<IUser>(req['user'],
+        ['firstName', 'lastName', 'email', "phoneNumber", "createdAt", "updatedAt"]
+      )
+    });
 
   }
 

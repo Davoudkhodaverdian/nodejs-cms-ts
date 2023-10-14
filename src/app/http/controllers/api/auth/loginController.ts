@@ -24,23 +24,63 @@ class LoginController extends Controller {
 
   index(req: Request, res: Response) {
 
-
     const createToken = this.createToken;
     User.findOne({ email: req.body.email }, function (error: Error, user: IUser) {
-
+      if (error) {
+        return res.status(409).send({
+          error: {
+            response: error,
+            message: 'متاسفانه خطایی رخ داده است',
+            status: 409
+          }
+        });
+      }
       if (!user) {
-        return res.status(422).json({ error: { message: "چنین ایمیلی وجود ندارد" } });
+        return res.status(409).send({
+          error: {
+            // message: 'This email is not found!',
+            message: 'چنین ایمیلی ثبت نشده است، لطفا ثبت نام کنید',
+            response: {
+              message: 'This email is not found!',
+            },
+          },
+          status: 409
+        });
       } else {
 
-        bcrypt.compare(req.body.password, user.password, function (_error, result) {
+        bcrypt.compare(req.body.password, user.password, function (error, result) {
+          if (error) {
+            return res.status(409).send({
+              error: {
+                response: error,
+                message: 'متاسفانه خطایی رخ داده است',
+                status: 409
+              }
+            });
+          }
           // result == false
           if (!result) {
-            return res.status(422).json({ error: { message: "پسورد وارد شده صحیح نمی باشد" } });
+            return res.status(409).send({
+              error: {
+                response: { message: "The password is incorrect" },
+                message: 'پسورد وارد شده صحیح نمی باشد',
+              },
+              status: 409
+            })
           }
           //create token
           return res.status(200).json({
-            user: new Transform().transform<IUser>(user, ['firstName', 'lastName', 'email']),
-            token: createToken(user._id)
+            message: 'The user has been registerd with us!',
+            response: {
+              data: {
+                ...(new Transform().transform<IUser>(
+                  user,
+                  ['firstName', 'lastName', 'email', "phoneNumber", "createdAt", "updatedAt"]
+                )),
+                token: createToken(user._id)
+              }
+            },
+            status: 200
           });
         });
 

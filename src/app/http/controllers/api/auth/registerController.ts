@@ -22,7 +22,7 @@ class RegisterController extends Controller {
   }
 
   index(req: Request, res: Response) {
-    
+
     const createToken = this.createToken;
     let newUser = new User({
       firstName: req.body.firstName,
@@ -33,17 +33,43 @@ class RegisterController extends Controller {
     newUser.save((error: Error, user: IUser) => {
       if (error) {
         if (error?.['code'] == 11000 && Object.keys(error?.['keyValue']).includes('email')) {
-          return res.status(422).json({
-            error: { ...error, message: "ایمیل وارد شده تکراری است و قبلا ثبت شده است" }
+          return res.status(409).send({
+            error: {
+              // message: 'This email user is already in use!',
+              message: 'این ایمیل قبلا استفاده شده است، لطفا وارد شوید',
+              response: {
+                message: 'This email user is already in use!',
+              },
+            },
+            status: 409
+          });
+        } else {
+          return res.status(409).send({
+            error: {
+              // message: 'This email is not found!',
+              message: 'متاسفانه خطایی رخ داده است',
+              response: {
+                message: 'This email is not found!',
+              },
+            },
+            status: 409
           });
         }
       } else {
         //create token
         return res.status(200).json({
-          user: new Transform().transform<IUser>(user, ['firstName', 'lastName', 'email']),
-          token: createToken(user._id)
+          message: 'The user has been registerd with us!',
+          response: {
+            data: {
+              ...(new Transform().transform<IUser>(
+                user,
+                ['firstName', 'lastName', 'email', "phoneNumber", "created_at", "updated_at"]
+              )),
+              token: createToken(user._id)
+            }
+          },
+          status: 200
         });
-
       }
     });
   }
