@@ -17,8 +17,8 @@ const Product = mongoose.model('product', ProductSchema);
 
 export default Product;
 export interface IProduct extends Document {
-    createdAt: NativeDate;
-    updatedAt: NativeDate;
+    created_at: NativeDate;
+    updated_at: NativeDate;
     title: string;
     body: string;
     price: string;

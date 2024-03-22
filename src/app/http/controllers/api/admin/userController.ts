@@ -15,8 +15,8 @@ class UserController extends Controller {
   createUser(req: Request, res: Response) {
 
     let newUser = new User({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
+      firstname: req.body.firstName,
+      lastname: req.body.lastName,
       email: req.body.email,
       password: req.body.password
     });

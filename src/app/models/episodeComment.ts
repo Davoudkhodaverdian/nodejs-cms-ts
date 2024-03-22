@@ -15,8 +15,8 @@ const EpisodeSchema = new Schema({
 const EpisodeComment = mongoose.model('episode' , EpisodeSchema);
 export default EpisodeComment;
 export interface IEpisodeComment extends Document {
-    createdAt: NativeDate;
-    updatedAt: NativeDate;
+    created_at: NativeDate;
+    updated_at: NativeDate;
     body: string;
     user: mongoose.Types.ObjectId
     episode: mongoose.Types.ObjectId

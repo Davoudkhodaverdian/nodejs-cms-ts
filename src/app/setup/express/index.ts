@@ -12,7 +12,7 @@ export const setupExpress = (app: Express) => {
     // Enable CORS Requests Cross-origin resource sharing (CORS)
     app.use(cors({
         origin: process.env.NODE_ENV === 'production' ? process.env.NEXT_APP_DOMAIN : 'http://localhost:3000',
-        credentials: false
+        credentials: true
     }));
     const server = http.createServer(app);
     server.listen(port, () => {

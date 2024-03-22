@@ -75,7 +75,7 @@ class LoginController extends Controller {
               data: {
                 ...(new Transform().transform<IUser>(
                   user,
-                  ['firstName', 'lastName', 'email', "phoneNumber", "createdAt", "updatedAt"]
+                  ['firstname', 'lastname', 'email', "phonenumber", "created_at", "updated_at"]
                 )),
                 token: createToken(user._id)
               }

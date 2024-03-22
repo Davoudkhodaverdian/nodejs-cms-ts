@@ -16,8 +16,8 @@ const CourseSchema = new Schema({
 const Course = mongoose.model('course' , CourseSchema);
 export default Course;
 export interface ICourse extends Document {
-    createdAt: NativeDate;
-    updatedAt: NativeDate;
+    created_at: NativeDate;
+    updated_at: NativeDate;
     user: mongoose.Types.ObjectId
     title: string;
     body: string;

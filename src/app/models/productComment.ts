@@ -15,8 +15,8 @@ const ProductCommentSchema = new Schema({
 const ProductComment = mongoose.model('productComment' , ProductCommentSchema);
 export default ProductComment;
 export interface IProductComment extends Document {
-    createdAt: NativeDate;
-    updatedAt: NativeDate;
+    created_at: NativeDate;
+    updated_at: NativeDate;
     body: string;
     user: mongoose.Types.ObjectId
     product: mongoose.Types.ObjectId

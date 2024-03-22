@@ -26,7 +26,7 @@ class EpisodeController extends Controller {
           course: course._id, // or req.body.course_id
           title: req.body.title,
           body: req.body.body,
-          videoUrl: req.body.videoUrl,
+          videourl: req.body.videoUrl,
           number: req.body.number,
         });
         newEpisode.save((error) => {
